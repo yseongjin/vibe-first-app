@@ -3,8 +3,46 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>심플 계산기</title>
+  <title>Simple Calculator</title>
   <style>
+    :root {
+      --body-bg: #f4f5f7;
+      --calculator-bg: #ffffff;
+      --text-color: #1f2937;
+      --display-border: #d9d9d9;
+      --display-bg: #fafafa;
+      --button-bg: #e9ecf1;
+      --button-hover-bg: #dde2ea;
+      --operator-bg: #cfe0ff;
+      --operator-hover-bg: #b8d0ff;
+      --equals-bg: #6d9eff;
+      --equals-hover-bg: #5a8ef6;
+      --clear-bg: #ffd3d3;
+      --clear-hover-bg: #ffc0c0;
+      --toggle-bg: #e8ecf3;
+      --toggle-hover-bg: #d9dfeb;
+      --shadow-color: rgba(0, 0, 0, 0.12);
+    }
+
+    [data-theme="dark"] {
+      --body-bg: #111827;
+      --calculator-bg: #1f2937;
+      --text-color: #f9fafb;
+      --display-border: #374151;
+      --display-bg: #111827;
+      --button-bg: #374151;
+      --button-hover-bg: #4b5563;
+      --operator-bg: #334155;
+      --operator-hover-bg: #475569;
+      --equals-bg: #2563eb;
+      --equals-hover-bg: #1d4ed8;
+      --clear-bg: #7f1d1d;
+      --clear-hover-bg: #991b1b;
+      --toggle-bg: #374151;
+      --toggle-hover-bg: #4b5563;
+      --shadow-color: rgba(0, 0, 0, 0.35);
+    }
+
     * {
       box-sizing: border-box;
     }
@@ -16,15 +54,45 @@
       align-items: center;
       justify-content: center;
       font-family: Arial, sans-serif;
-      background: #f4f5f7;
+      background: var(--body-bg);
+      color: var(--text-color);
     }
 
     .calculator {
       width: 320px;
       padding: 16px;
       border-radius: 12px;
-      background: #ffffff;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+      background: var(--calculator-bg);
+      box-shadow: 0 10px 25px var(--shadow-color);
+    }
+
+    .app-header {
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .app-title {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .theme-toggle {
+      height: 36px;
+      padding: 0 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      background: var(--toggle-bg);
+      color: var(--text-color);
+    }
+
+    .theme-toggle:hover {
+      background: var(--toggle-hover-bg);
     }
 
     .display {
@@ -32,11 +100,12 @@
       height: 56px;
       margin-bottom: 12px;
       padding: 0 12px;
-      border: 1px solid #d9d9d9;
+      border: 1px solid var(--display-border);
       border-radius: 8px;
       font-size: 1.4rem;
       text-align: right;
-      background: #fafafa;
+      background: var(--display-bg);
+      color: var(--text-color);
     }
 
     .buttons {
@@ -51,42 +120,47 @@
       border-radius: 8px;
       font-size: 1rem;
       cursor: pointer;
-      background: #e9ecf1;
+      background: var(--button-bg);
+      color: var(--text-color);
     }
 
     button:hover {
-      background: #dde2ea;
+      background: var(--button-hover-bg);
     }
 
     .operator {
-      background: #cfe0ff;
+      background: var(--operator-bg);
     }
 
     .operator:hover {
-      background: #b8d0ff;
+      background: var(--operator-hover-bg);
     }
 
     .equals {
-      background: #6d9eff;
+      background: var(--equals-bg);
       color: #fff;
       grid-column: span 2;
     }
 
     .equals:hover {
-      background: #5a8ef6;
+      background: var(--equals-hover-bg);
     }
 
     .clear {
-      background: #ffd3d3;
+      background: var(--clear-bg);
     }
 
     .clear:hover {
-      background: #ffc0c0;
+      background: var(--clear-hover-bg);
     }
   </style>
 </head>
 <body>
   <div class="calculator">
+    <div class="app-header">
+      <h1 class="app-title">Simple Calculator</h1>
+      <button id="themeToggle" class="theme-toggle" type="button">Dark</button>
+    </div>
     <input id="display" class="display" type="text" readonly />
     <div class="buttons">
       <button class="clear" data-value="C">C</button>
@@ -116,8 +190,10 @@
 
   <script>
     const display = document.getElementById("display");
-    const buttons = document.querySelectorAll("button");
+    const calcButtons = document.querySelectorAll(".buttons button");
+    const themeToggle = document.getElementById("themeToggle");
     const calcHistory = [];
+    let currentTheme = "light";
 
     function appendValue(value) {
       display.value += value;
@@ -146,7 +222,17 @@
       }
     }
 
-    buttons.forEach((button) => {
+    function setTheme(theme) {
+      currentTheme = theme;
+      document.documentElement.setAttribute("data-theme", theme);
+      themeToggle.textContent = theme === "light" ? "Dark" : "Light";
+    }
+
+    themeToggle.addEventListener("click", () => {
+      setTheme(currentTheme === "light" ? "dark" : "light");
+    });
+
+    calcButtons.forEach((button) => {
       button.addEventListener("click", () => {
         const value = button.dataset.value;
 
@@ -187,6 +273,8 @@
         clearDisplay();
       }
     });
+
+    setTheme("light");
   </script>
 </body>
 </html>

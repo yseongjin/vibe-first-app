@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>도토리의 바이브 코딩 대시보드</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --surface: #131b34;
+      --surface-soft: #1a2445;
+      --text: #eef2ff;
+      --text-muted: #c2cbe4;
+      --accent: #6ea8fe;
+      --line: rgba(255, 255, 255, 0.12);
+      --shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
+      --radius: 18px;
+      --container: 1100px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Pretendard", "Noto Sans KR", "Segoe UI", sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at top right, #1d2a57 0%, var(--bg) 40%, #090d1a 100%);
+      line-height: 1.5;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(var(--container), calc(100% - 2rem));
+      margin: 0 auto;
+    }
+
+    .title-bar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(8px);
+      background: rgba(11, 16, 32, 0.82);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .title-bar h1 {
+      margin: 0;
+      padding: 0.95rem 0;
+      font-size: clamp(1.05rem, 2.8vw, 1.4rem);
+      letter-spacing: 0.02em;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 46vh;
+      margin-top: 1.2rem;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 4rem 1.25rem;
+      background:
+        linear-gradient(180deg, rgba(7, 10, 20, 0.2) 0%, rgba(7, 10, 20, 0.68) 100%),
+        url("https://source.unsplash.com/zAPbXrhIfTU/1600x900") center / cover no-repeat;
+    }
+
+    .hero h2 {
+      margin: 0;
+      font-size: clamp(1.7rem, 6vw, 3.4rem);
+      font-weight: 800;
+      text-shadow: 0 6px 22px rgba(0, 0, 0, 0.55);
+    }
+
+    .section {
+      margin-top: 1.4rem;
+      padding: 1.2rem;
+      background: linear-gradient(145deg, var(--surface) 0%, var(--surface-soft) 100%);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .section h3 {
+      margin: 0 0 0.9rem;
+      font-size: clamp(1.05rem, 3.5vw, 1.3rem);
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    .clip-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.9rem;
+    }
+
+    .clip-card {
+      background: #0c1329;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .clip-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(110, 168, 254, 0.75);
+    }
+
+    .clip-card img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      background: #0a0f20;
+    }
+
+    .clip-card p {
+      margin: 0;
+      padding: 0.55rem 0.65rem 0.7rem;
+      color: var(--text-muted);
+      font-size: 0.92rem;
+    }
+
+    .repo-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.72rem 0.95rem;
+      border-radius: 12px;
+      border: 1px solid rgba(110, 168, 254, 0.5);
+      background: rgba(110, 168, 254, 0.12);
+      transition: background 0.2s ease, transform 0.2s ease;
+      word-break: break-all;
+    }
+
+    .repo-link:hover {
+      background: rgba(110, 168, 254, 0.2);
+      transform: translateY(-1px);
+    }
+
+    .contact-bar {
+      margin: 1.4rem 0 1.8rem;
+      padding: 0.95rem 1rem;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(10, 15, 33, 0.76);
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      text-align: center;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 760px) {
+      .container {
+        width: min(var(--container), calc(100% - 1.1rem));
+      }
+
+      .hero {
+        min-height: 38vh;
+        margin-top: 0.9rem;
+        padding: 3.1rem 1rem;
+      }
+
+      .section {
+        margin-top: 1rem;
+        padding: 1rem;
+      }
+
+      .clip-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-bar {
+        font-size: 0.86rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="title-bar">
+    <div class="container">
+      <h1>도토리의 바이브 코딩 대시보드</h1>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero" aria-label="Top image and slogan">
+      <h2>반응형 웹페이지</h2>
+    </section>
+
+    <section class="section" aria-labelledby="clips-heading">
+      <h3 id="clips-heading">YouTube Clips</h3>
+      <div class="clip-grid" id="clip-grid"></div>
+    </section>
+
+    <section class="section" aria-labelledby="repo-heading">
+      <h3 id="repo-heading">GitHub Repos</h3>
+      <a class="repo-link" href="https://guithub.com/junsang-dong/cloud-vibe-1007-docker" target="_blank" rel="noopener noreferrer">
+        https://guithub.com/junsang-dong/cloud-vibe-1007-docker
+      </a>
+    </section>
+
+    <footer class="contact-bar">
+      에이콘출판 도토리 / naebon@naver.com / https://guithub.com/junsang-dong
+    </footer>
+  </main>
+
+  <script>
+    const videoId = "WInPBmCK3l4";
+    const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+    const clips = Array.from({ length: 4 }, (_, idx) => ({
+      title: `클립 ${idx + 1}`,
+      thumb: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+      link: videoUrl
+    }));
+
+    const clipGrid = document.getElementById("clip-grid");
+
+    clips.forEach((clip) => {
+      const anchor = document.createElement("a");
+      anchor.className = "clip-card";
+      anchor.href = clip.link;
+      anchor.target = "_blank";
+      anchor.rel = "noopener noreferrer";
+      anchor.innerHTML = `
+        <img src="${clip.thumb}" alt="${clip.title} 유튜브 섬네일" loading="lazy">
+        <p>${clip.title}</p>
+      `;
+      clipGrid.appendChild(anchor);
+    });
+  </script>
+</body>
+</html>

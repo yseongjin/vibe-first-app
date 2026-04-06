@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>심플 계산기</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+      background: #f4f5f7;
+    }
+
+    .calculator {
+      width: 320px;
+      padding: 16px;
+      border-radius: 12px;
+      background: #ffffff;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    .display {
+      width: 100%;
+      height: 56px;
+      margin-bottom: 12px;
+      padding: 0 12px;
+      border: 1px solid #d9d9d9;
+      border-radius: 8px;
+      font-size: 1.4rem;
+      text-align: right;
+      background: #fafafa;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    button {
+      height: 48px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      background: #e9ecf1;
+    }
+
+    button:hover {
+      background: #dde2ea;
+    }
+
+    .operator {
+      background: #cfe0ff;
+    }
+
+    .operator:hover {
+      background: #b8d0ff;
+    }
+
+    .equals {
+      background: #6d9eff;
+      color: #fff;
+      grid-column: span 2;
+    }
+
+    .equals:hover {
+      background: #5a8ef6;
+    }
+
+    .clear {
+      background: #ffd3d3;
+    }
+
+    .clear:hover {
+      background: #ffc0c0;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <input id="display" class="display" type="text" readonly />
+    <div class="buttons">
+      <button class="clear" data-value="C">C</button>
+      <button data-value=".">.</button>
+      <button class="operator" data-value="/">/</button>
+      <button class="operator" data-value="*">*</button>
+
+      <button data-value="7">7</button>
+      <button data-value="8">8</button>
+      <button data-value="9">9</button>
+      <button class="operator" data-value="-">-</button>
+
+      <button data-value="4">4</button>
+      <button data-value="5">5</button>
+      <button data-value="6">6</button>
+      <button class="operator" data-value="+">+</button>
+
+      <button data-value="1">1</button>
+      <button data-value="2">2</button>
+      <button data-value="3">3</button>
+      <button data-value="00">00</button>
+
+      <button data-value="0">0</button>
+      <button class="equals" data-value="=">=</button>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById("display");
+    const buttons = document.querySelectorAll("button");
+    const calcHistory = [];
+
+    function appendValue(value) {
+      display.value += value;
+    }
+
+    function clearDisplay() {
+      display.value = "";
+    }
+
+    function calculate() {
+      if (!display.value.trim()) return;
+
+      try {
+        const expression = display.value;
+        const result = eval(expression);
+        display.value = String(result);
+
+        calcHistory.push(`${expression} = ${result}`);
+        if (calcHistory.length > 5) {
+          calcHistory.shift();
+        }
+
+        console.log("최근 5개 계산 기록:", calcHistory);
+      } catch (error) {
+        display.value = "Error";
+      }
+    }
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const value = button.dataset.value;
+
+        if (value === "C") {
+          clearDisplay();
+          return;
+        }
+
+        if (value === "=") {
+          calculate();
+          return;
+        }
+
+        appendValue(value);
+      });
+    });
+
+    document.addEventListener("keydown", (event) => {
+      const allowedKeys = "0123456789+-*/.";
+
+      if (allowedKeys.includes(event.key)) {
+        appendValue(event.key);
+        return;
+      }
+
+      if (event.key === "Enter") {
+        event.preventDefault();
+        calculate();
+        return;
+      }
+
+      if (event.key === "Backspace") {
+        display.value = display.value.slice(0, -1);
+        return;
+      }
+
+      if (event.key === "Escape") {
+        clearDisplay();
+      }
+    });
+  </script>
+</body>
+</html>

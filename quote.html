@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>명언 카드 생성기</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Pretendard", "Noto Sans KR", Arial, sans-serif;
+        background: #f3f4f6;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 520px;
+        padding: 24px;
+      }
+
+      .quote-card {
+        border-radius: 18px;
+        padding: 28px;
+        min-height: 250px;
+        color: #111827;
+        box-shadow: 0 16px 30px rgba(17, 24, 39, 0.16);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        transition: background-color 0.3s ease;
+      }
+
+      .quote-text {
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 700;
+        line-height: 1.6;
+      }
+
+      .quote-author {
+        margin: 16px 0 0;
+        font-size: 1rem;
+        font-weight: 500;
+        opacity: 0.9;
+      }
+
+      .action-wrap {
+        display: flex;
+        justify-content: center;
+        margin-top: 18px;
+      }
+
+      .generate-btn {
+        border: 0;
+        border-radius: 999px;
+        padding: 12px 22px;
+        font-size: 0.95rem;
+        font-weight: 700;
+        background: #111827;
+        color: #ffffff;
+        cursor: pointer;
+        transition: transform 0.15s ease, opacity 0.15s ease;
+      }
+
+      .generate-btn:hover {
+        opacity: 0.92;
+        transform: translateY(-1px);
+      }
+
+      .generate-btn:active {
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <section id="quoteCard" class="quote-card">
+        <p id="quoteText" class="quote-text">버튼을 눌러 오늘의 명언을 확인해 보세요.</p>
+        <p id="quoteAuthor" class="quote-author">- 명언 카드 생성기</p>
+      </section>
+      <div class="action-wrap">
+        <button id="generateBtn" class="generate-btn" type="button">명언 뽑기</button>
+      </div>
+    </main>
+
+    <script>
+      const quotes = [
+        {
+          text: "성공은 최종 목적지가 아니라 계속되는 여정이다.",
+          author: "아서 애시",
+          color: "#FDE68A",
+        },
+        {
+          text: "작은 습관이 결국 큰 변화를 만든다.",
+          author: "제임스 클리어",
+          color: "#BFDBFE",
+        },
+        {
+          text: "시작이 반이다. 중요한 건 멈추지 않는 것이다.",
+          author: "아리스토텔레스",
+          color: "#C7D2FE",
+        },
+        {
+          text: "어제보다 나은 오늘이 되면, 내일은 더 좋아진다.",
+          author: "익명",
+          color: "#A7F3D0",
+        },
+        {
+          text: "기회는 준비된 사람에게만 선물처럼 온다.",
+          author: "루이 파스퇴르",
+          color: "#FBCFE8",
+        },
+      ];
+
+      const quoteCard = document.getElementById("quoteCard");
+      const quoteText = document.getElementById("quoteText");
+      const quoteAuthor = document.getElementById("quoteAuthor");
+      const generateBtn = document.getElementById("generateBtn");
+
+      function showRandomQuote() {
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        const selectedQuote = quotes[randomIndex];
+
+        quoteText.textContent = selectedQuote.text;
+        quoteAuthor.textContent = `- ${selectedQuote.author}`;
+        quoteCard.style.backgroundColor = selectedQuote.color;
+      }
+
+      generateBtn.addEventListener("click", showRandomQuote);
+    </script>
+  </body>
+</html>

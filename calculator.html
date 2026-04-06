@@ -7,6 +7,7 @@
   <style>
     :root {
       --body-bg: #f4f5f7;
+      --body-bg-accent: #dbe4ff;
       --calculator-bg: #ffffff;
       --text-color: #1f2937;
       --display-border: #d9d9d9;
@@ -26,6 +27,7 @@
 
     [data-theme="dark"] {
       --body-bg: #111827;
+      --body-bg-accent: #1e293b;
       --calculator-bg: #1f2937;
       --text-color: #f9fafb;
       --display-border: #374151;
@@ -54,8 +56,15 @@
       align-items: center;
       justify-content: center;
       font-family: Arial, sans-serif;
-      background: var(--body-bg);
+      background: radial-gradient(
+          circle at 20% 15%,
+          var(--body-bg-accent) 0%,
+          transparent 45%
+        ),
+        radial-gradient(circle at 80% 85%, var(--body-bg-accent) 0%, transparent 38%),
+        var(--body-bg);
       color: var(--text-color);
+      transition: background 0.3s ease, color 0.3s ease;
     }
 
     .calculator {
@@ -64,6 +73,7 @@
       border-radius: 12px;
       background: var(--calculator-bg);
       box-shadow: 0 10px 25px var(--shadow-color);
+      transition: background 0.3s ease, box-shadow 0.3s ease;
     }
 
     .app-header {
@@ -89,6 +99,7 @@
       cursor: pointer;
       background: var(--toggle-bg);
       color: var(--text-color);
+      min-width: 80px;
     }
 
     .theme-toggle:hover {
@@ -225,7 +236,8 @@
     function setTheme(theme) {
       currentTheme = theme;
       document.documentElement.setAttribute("data-theme", theme);
-      themeToggle.textContent = theme === "light" ? "Dark" : "Light";
+      themeToggle.textContent = theme === "light" ? "Dark Mode" : "Light Mode";
+      themeToggle.setAttribute("aria-label", theme === "light" ? "다크 테마로 전환" : "라이트 테마로 전환");
     }
 
     themeToggle.addEventListener("click", () => {

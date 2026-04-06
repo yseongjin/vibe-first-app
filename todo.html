@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>To-Do 메모 앱</title>
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --danger: #ef4444;
+      --border: #e5e7eb;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #f9fafb 0%, #eef2ff 100%);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 640px;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      padding: 20px;
+    }
+
+    h1 {
+      margin: 0 0 16px;
+      font-size: 1.5rem;
+    }
+
+    .form {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .form input {
+      width: 100%;
+      height: 44px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0 12px;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .form input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 0 16px;
+      height: 44px;
+      cursor: pointer;
+      font-weight: 700;
+      color: white;
+      background: var(--primary);
+    }
+
+    .btn:hover {
+      filter: brightness(1.04);
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    .item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fff;
+    }
+
+    .item span {
+      word-break: break-word;
+      line-height: 1.35;
+    }
+
+    .delete-btn {
+      border: 0;
+      border-radius: 8px;
+      padding: 8px 10px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: white;
+      background: var(--danger);
+    }
+
+    .empty {
+      color: var(--muted);
+      text-align: center;
+      padding: 8px;
+    }
+
+    @media (max-width: 520px) {
+      body {
+        padding: 14px;
+      }
+
+      .app {
+        padding: 16px;
+      }
+
+      .form {
+        grid-template-columns: 1fr;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <h1>To-Do 메모</h1>
+    <form class="form" id="todoForm">
+      <input id="todoInput" type="text" placeholder="할 일을 입력하세요" />
+      <button class="btn" type="submit">추가</button>
+    </form>
+    <ul id="todoList"></ul>
+    <p id="emptyText" class="empty">아직 메모가 없습니다.</p>
+  </main>
+
+  <script>
+    const STORAGE_KEY = "todo_memo_items";
+
+    const todoForm = document.getElementById("todoForm");
+    const todoInput = document.getElementById("todoInput");
+    const todoList = document.getElementById("todoList");
+    const emptyText = document.getElementById("emptyText");
+
+    let todos = loadTodos();
+    render();
+
+    todoForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      const text = todoInput.value.trim();
+      if (!text) return;
+
+      const newTodo = {
+        id: Date.now().toString(),
+        text: text
+      };
+
+      todos.unshift(newTodo);
+      saveTodos();
+      render();
+      todoInput.value = "";
+      todoInput.focus();
+    });
+
+    function loadTodos() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return [];
+      try {
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function saveTodos() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+    }
+
+    function deleteTodo(id) {
+      todos = todos.filter(function (todo) {
+        return todo.id !== id;
+      });
+      saveTodos();
+      render();
+    }
+
+    function render() {
+      todoList.innerHTML = "";
+      emptyText.style.display = todos.length ? "none" : "block";
+
+      todos.forEach(function (todo) {
+        const item = document.createElement("li");
+        item.className = "item";
+
+        const text = document.createElement("span");
+        text.textContent = todo.text;
+
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "delete-btn";
+        deleteButton.type = "button";
+        deleteButton.textContent = "삭제";
+        deleteButton.addEventListener("click", function () {
+          deleteTodo(todo.id);
+        });
+
+        item.appendChild(text);
+        item.appendChild(deleteButton);
+        todoList.appendChild(item);
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>내 위치 날씨</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="header">
+        <h1 class="title">내 위치 날씨</h1>
+        <p class="subtitle">
+          OpenWeather API Key를 입력한 뒤 버튼을 누르면 현재 위치 기준 날씨를
+          불러옵니다.
+        </p>
+      </header>
+
+      <main class="main">
+        <!-- API Key는 서버에 보내지 않고, 브라우저 메모리(변수)에만 잠시 둡니다. -->
+        <form class="form" id="weather-form" novalidate>
+          <div class="field">
+            <label class="label" for="api-key-input">OpenWeather API Key</label>
+            <input
+              class="input"
+              id="api-key-input"
+              name="apiKey"
+              type="password"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="여기에 API Key를 붙여넣기"
+              aria-describedby="api-key-hint"
+            />
+            <p class="hint" id="api-key-hint">
+              Key는 localStorage에 저장되지 않으며, 새로고침하면 다시 입력해야
+              합니다.
+            </p>
+          </div>
+          <button class="btn" type="submit" id="fetch-btn" aria-busy="false">
+            현재 위치 날씨 보기
+          </button>
+        </form>
+
+        <!-- 진행 상황·오류 안내 -->
+        <p
+          class="status"
+          id="status-message"
+          role="status"
+          aria-live="polite"
+        ></p>
+
+        <!-- 결과 카드: 데이터 없을 때는 안내 문구만 -->
+        <section class="card" id="weather-card" aria-labelledby="card-heading">
+          <h2 class="card-title" id="card-heading">날씨 정보</h2>
+          <div class="card-body" id="card-body">
+            <p class="placeholder" id="card-placeholder">
+              아직 조회한 날씨가 없습니다. API Key를 입력하고 버튼을 눌러
+              주세요.
+            </p>
+            <div class="weather-result hidden" id="weather-result">
+              <p class="city" id="city-name"></p>
+              <p class="temp" id="temperature"></p>
+              <img
+                class="weather-icon"
+                id="weather-icon"
+                src=""
+                alt=""
+                width="100"
+                height="100"
+                decoding="async"
+              />
+              <p class="desc" id="weather-desc"></p>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <small>Weather data by OpenWeather</small>
+      </footer>
+    </div>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>

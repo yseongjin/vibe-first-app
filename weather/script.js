@@ -15,6 +15,9 @@ const cityNameEl = document.getElementById("city-name");
 const temperatureEl = document.getElementById("temperature");
 const weatherIconEl = document.getElementById("weather-icon");
 const weatherDescEl = document.getElementById("weather-desc");
+const feelsLikeEl = document.getElementById("feels-like");
+const humidityEl = document.getElementById("humidity");
+const windSpeedEl = document.getElementById("wind-speed");
 
 /**
  * 세션 동안만 유지되는 API Key (새로고침하면 사라짐)
@@ -151,6 +154,7 @@ function isValidWeatherPayload(data) {
   if (!data.main || typeof data.main.temp !== "number") return false;
   if (!Array.isArray(data.weather) || data.weather.length === 0) return false;
   if (typeof data.weather[0].icon !== "string") return false;
+  // 체감·습도는 보통 항상 옴; 없으면 렌더 단계에서 대체 표기
   return true;
 }
 
@@ -178,6 +182,23 @@ function renderWeather(data) {
 
   weatherDescEl.textContent = desc;
   weatherDescEl.hidden = !desc;
+
+  // 우측 열: 체감온도(main.feels_like), 습도(%), 풍속(m/s, metric)
+  const main = data.main;
+  const feels =
+    typeof main.feels_like === "number"
+      ? `${Math.round(main.feels_like)}°C`
+      : "—";
+  const hum =
+    typeof main.humidity === "number" ? `${Math.round(main.humidity)}%` : "—";
+  let windText = "—";
+  if (data.wind && typeof data.wind.speed === "number") {
+    // 소수 한 자리까지 표시 (바람이 약할 때도 읽기 쉽게)
+    windText = `${data.wind.speed.toFixed(1)} m/s`;
+  }
+  feelsLikeEl.textContent = feels;
+  humidityEl.textContent = hum;
+  windSpeedEl.textContent = windText;
 }
 
 /**

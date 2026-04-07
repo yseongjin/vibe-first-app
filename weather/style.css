@@ -1,4 +1,4 @@
-/* 기본 리셋과 폰트 */
+/* 고정 뷰 + 연어(salmon) 배경 위 다크 UI */
 *,
 *::before,
 *::after {
@@ -8,182 +8,340 @@
 body {
   margin: 0;
   min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 12px;
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR",
     sans-serif;
-  font-size: 1rem;
-  line-height: 1.5;
-  color: #1a1a1a;
-  background: #f0f2f5;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #e8eaef;
+  /* 페이지 배경: salmon */
+  background: salmon;
 }
 
+/* 웹앱 고정 크기: 640 × 400 (작은 화면에서는 너비만 축소) */
 .page {
-  max-width: 32rem;
-  margin: 0 auto;
-  padding: 1.25rem 1rem 2rem;
-  min-height: 100vh;
+  width: 640px;
+  max-width: 100%;
+  height: 400px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 10px 14px 8px;
   display: flex;
   flex-direction: column;
+  background: rgba(15, 18, 24, 0.55);
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
 }
 
 .header {
-  margin-bottom: 1.5rem;
+  margin-bottom: 8px;
+  flex-shrink: 0;
 }
 
 .title {
-  margin: 0 0 0.5rem;
-  font-size: clamp(1.35rem, 4vw, 1.75rem);
+  margin: 0;
+  font-size: 1.1rem;
   font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.02em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
 }
 
 .subtitle {
-  margin: 0;
-  font-size: 0.9rem;
-  color: #555;
+  margin: 2px 0 0;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .main {
   flex: 1;
-}
-
-/* 폼 */
-.form {
+  min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 6px;
+}
+
+/* 폼: 가로로 길 때 한 줄 배치 */
+.form {
+  flex-shrink: 0;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 10px;
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 3px;
+}
+
+.field--grow {
+  flex: 1;
+  min-width: 0;
 }
 
 .label {
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .input {
   width: 100%;
-  padding: 0.65rem 0.75rem;
-  border: 1px solid #ccc;
+  padding: 6px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
-  font-size: 1rem;
-  background: #fff;
+  font-size: 0.8rem;
+  background: rgba(20, 24, 32, 0.92);
+  color: #f1f5f9;
+}
+
+.input::placeholder {
+  color: rgba(241, 245, 249, 0.45);
 }
 
 .input:focus {
-  outline: 2px solid #2563eb;
-  outline-offset: 2px;
-  border-color: #2563eb;
+  outline: 2px solid #7dd3fc;
+  outline-offset: 1px;
+  border-color: #7dd3fc;
 }
 
 .hint {
-  margin: 0;
-  font-size: 0.8rem;
-  color: #666;
+  margin: 4px 0 0;
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .btn {
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
+  flex-shrink: 0;
+  padding: 8px 12px;
+  font-size: 0.78rem;
   font-weight: 600;
-  color: #fff;
-  background: #2563eb;
+  color: #0f172a;
+  background: #fde68a;
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .btn:hover {
-  background: #1d4ed8;
+  background: #fcd34d;
 }
 
 .btn:focus-visible {
-  outline: 2px solid #1e40af;
+  outline: 2px solid #fff;
   outline-offset: 2px;
 }
 
 .btn:disabled {
-  opacity: 0.65;
+  opacity: 0.55;
   cursor: not-allowed;
 }
 
-/* 상태 메시지 */
 .status {
-  min-height: 1.5rem;
-  margin: 1rem 0;
-  font-size: 0.9rem;
-  color: #374151;
+  min-height: 1.1rem;
+  margin: 0;
+  font-size: 0.72rem;
+  color: #fef3c7;
+  flex-shrink: 0;
 }
 
 .status.is-error {
-  color: #b91c1c;
+  color: #fecaca;
+  font-weight: 600;
 }
 
-/* 카드 */
+/* 날씨 카드: 다크 패널 */
 .card {
-  background: #fff;
+  flex: 1;
+  min-height: 0;
+  background: rgba(18, 22, 30, 0.95);
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.06);
-  padding: 1.25rem 1rem;
-  border: 1px solid #e5e7eb;
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
 }
 
 .card-title {
-  margin: 0 0 1rem;
-  font-size: 1rem;
+  margin: 0 0 6px;
+  font-size: 0.72rem;
   font-weight: 600;
-  color: #374151;
+  color: rgba(226, 232, 240, 0.85);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
 .card-body {
-  text-align: center;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
 }
 
 .placeholder {
   margin: 0;
-  font-size: 0.95rem;
-  color: #6b7280;
+  font-size: 0.8rem;
+  color: rgba(148, 163, 184, 0.95);
+  text-align: center;
+  align-self: center;
+  width: 100%;
+  padding: 8px;
 }
 
-/* JS에서 토글할 때 공통으로 씁니다 */
 .hidden {
   display: none !important;
 }
 
-.city {
-  margin: 0 0 0.25rem;
-  font-size: 1.25rem;
-  font-weight: 700;
+/* 2열: 가로형 레이아웃 */
+.weather-result {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 14px;
+  width: 100%;
 }
 
-.temp {
-  margin: 0 0 0.5rem;
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1e3a8a;
+.weather-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.weather-col--primary {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+  padding: 4px 8px;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.weather-col--meta {
+  flex: 1;
+  min-width: 0;
+  justify-content: center;
+}
+
+/* 아이콘: 밝은 원판으로 시인성 확보 */
+.icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 4px;
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 25%,
+    #fff8f0 0%,
+    #e2e8f0 55%,
+    #cbd5e1 100%
+  );
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
 }
 
 .weather-icon {
   display: block;
-  margin: 0 auto 0.5rem;
-  width: 100px;
-  height: 100px;
+  width: 96px;
+  height: 96px;
+}
+
+.temp {
+  margin: 0 0 2px;
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.1;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+}
+
+.city {
+  margin: 0 0 2px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #bae6fd;
 }
 
 .desc {
   margin: 0;
-  font-size: 0.9rem;
-  color: #4b5563;
+  font-size: 0.7rem;
+  color: rgba(203, 213, 225, 0.95);
+}
+
+/* 우측 메타 정보 */
+.meta-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.meta-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: rgba(148, 163, 184, 0.95);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.meta-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #f8fafc;
 }
 
 .footer {
-  margin-top: 2rem;
+  margin-top: 6px;
   text-align: center;
+  flex-shrink: 0;
 }
 
 .footer small {
-  font-size: 0.75rem;
-  color: #9ca3af;
+  font-size: 0.62rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* 좁은 폭에서는 폼 세로 스택 */
+@media (max-width: 520px) {
+  .form-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .weather-result {
+    flex-direction: column;
+  }
+
+  .weather-col--primary {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 10px;
+  }
 }

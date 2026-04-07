@@ -7,41 +7,40 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <!-- 고정 640×400 뷰: 콘텐츠가 넘치면 내부 스크롤 -->
     <div class="page">
       <header class="header">
         <h1 class="title">내 위치 날씨</h1>
         <p class="subtitle">
-          OpenWeather API Key를 입력한 뒤 버튼을 누르면 현재 위치 기준 날씨를
-          불러옵니다.
+          API Key 입력 후 버튼 → 현재 위치 날씨 조회
         </p>
       </header>
 
       <main class="main">
-        <!-- API Key는 서버에 보내지 않고, 브라우저 메모리(변수)에만 잠시 둡니다. -->
         <form class="form" id="weather-form" novalidate>
-          <div class="field">
-            <label class="label" for="api-key-input">OpenWeather API Key</label>
-            <input
-              class="input"
-              id="api-key-input"
-              name="apiKey"
-              type="password"
-              autocomplete="off"
-              spellcheck="false"
-              placeholder="여기에 API Key를 붙여넣기"
-              aria-describedby="api-key-hint"
-            />
-            <p class="hint" id="api-key-hint">
-              Key는 localStorage에 저장되지 않으며, 새로고침하면 다시 입력해야
-              합니다.
-            </p>
+          <div class="form-row">
+            <div class="field field--grow">
+              <label class="label" for="api-key-input">OpenWeather API Key</label>
+              <input
+                class="input"
+                id="api-key-input"
+                name="apiKey"
+                type="password"
+                autocomplete="off"
+                spellcheck="false"
+                placeholder="API Key"
+                aria-describedby="api-key-hint"
+              />
+            </div>
+            <button class="btn" type="submit" id="fetch-btn" aria-busy="false">
+              날씨 보기
+            </button>
           </div>
-          <button class="btn" type="submit" id="fetch-btn" aria-busy="false">
-            현재 위치 날씨 보기
-          </button>
+          <p class="hint" id="api-key-hint">
+            Key는 메모리에만 사용 · localStorage 미사용
+          </p>
         </form>
 
-        <!-- 진행 상황·오류 안내 -->
         <p
           class="status"
           id="status-message"
@@ -49,27 +48,47 @@
           aria-live="polite"
         ></p>
 
-        <!-- 결과 카드: 데이터 없을 때는 안내 문구만 -->
         <section class="card" id="weather-card" aria-labelledby="card-heading">
           <h2 class="card-title" id="card-heading">날씨 정보</h2>
           <div class="card-body" id="card-body">
             <p class="placeholder" id="card-placeholder">
-              아직 조회한 날씨가 없습니다. API Key를 입력하고 버튼을 눌러
-              주세요.
+              API Key 입력 후 조회하면 여기에 날씨가 표시됩니다.
             </p>
             <div class="weather-result hidden" id="weather-result">
-              <p class="city" id="city-name"></p>
-              <p class="temp" id="temperature"></p>
-              <img
-                class="weather-icon"
-                id="weather-icon"
-                src=""
-                alt=""
-                width="100"
-                height="100"
-                decoding="async"
-              />
-              <p class="desc" id="weather-desc"></p>
+              <!-- 좌측: 아이콘 · 온도 · 지역 -->
+              <div class="weather-col weather-col--primary">
+                <div class="icon-wrap">
+                  <img
+                    class="weather-icon"
+                    id="weather-icon"
+                    src=""
+                    alt=""
+                    width="96"
+                    height="96"
+                    decoding="async"
+                  />
+                </div>
+                <p class="temp" id="temperature" aria-label="현재 기온"></p>
+                <p class="city" id="city-name"></p>
+                <p class="desc" id="weather-desc"></p>
+              </div>
+              <!-- 우측: 체감 · 습도 · 풍속 -->
+              <div class="weather-col weather-col--meta" aria-label="상세 정보">
+                <ul class="meta-list">
+                  <li class="meta-item">
+                    <span class="meta-label">체감온도</span>
+                    <span class="meta-value" id="feels-like"></span>
+                  </li>
+                  <li class="meta-item">
+                    <span class="meta-label">습도</span>
+                    <span class="meta-value" id="humidity"></span>
+                  </li>
+                  <li class="meta-item">
+                    <span class="meta-label">풍속</span>
+                    <span class="meta-value" id="wind-speed"></span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </section>
